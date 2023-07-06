@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>
+            Fakeblog | เก็บ Session การเข้าสู่ระบบ ใน React Static ด้วยท่าไหนดี?
+        </title>
+        <link href="../assets/styles/tailwind-output.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="p-4 sm:p-8">
+            <div class="mb-8">
+                <h1 class="text-6xl font-bold mb-4">
+                    เก็บ Session การเข้าสู่ระบบ ใน React Static ด้วยท่าไหนดี?
+                </h1>
+                <p class="text-xl">June 14, 2023</p>
+            </div>
+            <a class="block underline mb-8" href="../index.html"><- Back to Main Page</a>
+            <p class="mb-8">
+                React เป็น Framework ในการเขียนเว็บไซต์ที่เป็นที่นิยมเป็นอันดับ
+                1 ในปัจจุบัน (อ้างอิงจากจำนวนผู้กด Stars ใน Github)
+                ซึ่งในการใช้งานพื้นฐาน ด้วยความที่เป็น Static HTML
+                ไม่มีการส่งข้อมูลมาจากฝั่งเซิร์ฟเวอร์ ตัว Client
+                จะต้องเป็นผู้ขอข้อมูลจากทาง Server ด้วยการ Request API
+                ซึ่งคำถามคือ เราจะสามารถเก็บข้อมูลผู้ใช้ หรือข้อมูลต่างๆ
+                ที่ต้องขอจากฝั่ง Server มาเก็บไว้ที่ฝั่ง Client ด้วยวิธีการใดดี
+                ที่จะสามารถอ่านข้อมูลได้จากทุก Component เอาง่ายๆ เลย
+                คือจะได้ดึงข้อมูลของผู้ใช้เบื้องต้นมาแสดงผลได้
+                ว่าได้เข้าสู่ระบบไว้หรือยัง
+                หรือผู้ใช้ที่เข้าสู่ระบบอยู่นั้นชื่ออะไร
+            </p>
+            <h1 class="text-lg font-bold mb-4">- เก็บลง localStorage</h1>
+            <img
+                class="mb-8"
+                src="https://blogger.googleusercontent.com/img/a/AVvXsEgxUjGbiPN78WkXOupWUU8MgBaHcL2BHiR5oaPfL--LdfZDCvsiE7woxtKRUffF2hdItUWIxAobCApF5BsL9FTu_jfTUpAMxyvChq1lDDi9L07wDwGDBPz3s2ZtU0J4Q69_mLsPqDb2SQOmTncIopQmufIYwVDkmNIvnG_gWednI4xfON3NVhYVISXv"
+                alt="image"
+            />
+            <p class="mb-8">
+                เป็นวิธีการที่ Basic และง่ายสุดๆ ทุกภาษาสามารถทำได้เหมือนกันหมด
+                เพียงแค่เรียกฟังก์ชันใน Javascript สั้นๆ
+                "localStorage.setItem()" เพื่อเก็บข้อมูล และ
+                "localStorage.getItem()" เพื่ออ่านข้อมูล ซึ่งสามารถทำได้จากทุก
+                Component หากต้องการเพิ่มประสิทธิภาพในการใช้งานก็อย่าลืม
+                "localStorage.removeItem()"
+                เพื่อล้างข้อมูลไม่ให้เปลืองพื้นที่ฝั่ง Client
+                โดยหากต้องการเก็บข้อมูลเป็นแบบ JSON ก็อย่าลืม JSON.stringify()
+                ตอนเก็บข้อมูล และ JSON.parse() ตอนอ่านข้อมูลด้วย
+                อย่าลืมโหลดข้อมูลของผู้ใช้มาเก็บทิ้งไว้โดยใส่ useEffect() ไว้ใน
+                App Component ด้วยล่ะ
+            </p>
+            <h1 class="text-lg font-bold mb-4">- ใช้ Context</h1>
+            <p class="mb-8">
+                เป็นวิธีการพื้นฐานที่ผู้ใช้ React ควรใช้ คือการใช้ฟังก์ชัน
+                createContext() ของ React เพื่อสร้าง Context ทิ้งไว้ และเรียกใช้
+                useContext() ใน App Component
+                เพื่อสร้างตัวกลางในการเก็บข้อมูลทิ้งไว้ ในที่นี้แนะนำให้ใช้เป็น
+                state ของ react เพื่อจะได้เปลี่ยนแปลงข้อมูลจากทุก Component
+                ได้ตลอด (ซึ่งสามารถใช้ useState ได้เลย ห้ามผวนนะ 555)
+                โดยโหลดข้อมูลของผู้ใช้มาใส่ใน context ให้เรียบร้อย โดยใช้
+                useEffect() ที่ใส่ไว้ใน App Component และสร้าง Provider ของ
+                Context ทิ้งไว้ และใส่ value ของ provider เป็น state
+                ให้เรียบร้อย เพียงเท่านี้ก็สามารถเรียกข้อมูลของ Context
+                ได้จากทุก Component แล้ว เพียงเรียกใช้ฟังก์ชัน useContext
+                และใส่ตัว context ที่สร้างไว้ลงไปเป็น argument
+            </p>
+            <p>
+                จริงๆ ยังมีอีกหลายวิธี ลองศึกษาเพิ่มเติมด้วยตัวเองได้เลย
+                บทความชิ้นนี้อาจไม่ได้มีรายละเอียดเยอะมาก
+                เพราะทำเพื่อส่งงานโรงเรียนเท่านั้น 555+
+            </p>
+        </div>
+    </body>
+</html>
